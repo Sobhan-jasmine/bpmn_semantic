@@ -5,6 +5,8 @@ from contextlib import asynccontextmanager
 
 from config import settings
 from routers import gateway
+# import semantic router so we can register it
+from routers import semantic
 from core.orchestrator import orchestrator
 
 
@@ -38,6 +40,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(gateway.router, prefix=settings.API_PREFIX)
+app.include_router(semantic.router, prefix=settings.API_PREFIX)
 
 
 @app.get("/health")
@@ -48,9 +51,10 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(
         app,
         host=settings.HOST,
         port=settings.PORT,
-        reload=settings.DEBUG
+        reload=settings.DEBUG,
     )
